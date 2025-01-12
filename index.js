@@ -3,11 +3,13 @@ const mongoose = require("mongoose")
 const express = require("express")
 const morgan = require("morgan")
 const cors = require("cors")
+const dbConnect = require("./utils/dbConnect.js")
 const authRoutes = require("./routes/authRoutes.js")
 const userRoutes = require("./routes/userRoutes.js")
 const notesRoutes = require("./routes/notesRoutes.js")
 const authMiddleware = require("./middleware/authMiddleware.js")
 const app = express()
+dbConnect()
 const PORT = process.env.PORT || 8000
 dotenv.config()
 
@@ -31,3 +33,8 @@ app.use("/api/notes", notesRoutes)
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+app.get("/", (req, res) => {
+  res.send("API is running")
+})
+
+module.exports = app
