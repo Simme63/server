@@ -1,37 +1,38 @@
-const dotenv = require("dotenv")
-const mongoose = require("mongoose")
-const express = require("express")
-const morgan = require("morgan")
-const cors = require("cors")
-const dbConnect = require("./utils/dbConnect.js")
-const authRoutes = require("./routes/authRoutes.js")
-const userRoutes = require("./routes/userRoutes.js")
-const notesRoutes = require("./routes/notesRoutes.js")
+const dotenv = require("dotenv");
+const express = require("express");
+const morgan = require("morgan");
+const cors = require("cors");
+const dbConnect = require("./utils/dbConnect.js"); // Centralized database connection logic
+const authRoutes = require("./routes/authRoutes.js");
+const userRoutes = require("./routes/userRoutes.js");
+const notesRoutes = require("./routes/notesRoutes.js");
 const authMiddleware = require("./middleware/authMiddleware.js")
-const app = express()
-dbConnect()
-const PORT = process.env.PORT || 8000
-dotenv.config()
 
-mongoose.connect(process.env.MONGO_URI, {})
-const db = mongoose.connection
-db.on("error", (error) => console.log(`Error`))
-db.once("open", () => console.log(`Connected to MongoDB`))
+// Port to bind the app to
+const PORT = process.env.PORT || 8000; // 8000 is the default port
 
-app.use(morgan('dev'));
-app.use(cors());
-app.use(express.json())
-app.get('/', (req, res) => {
-  res.send("Welcome to the start page of the api");
-});
-app.use("*", authMiddleware)
+process.env.NODE_NO_WARNINGS = '1'; // Disable all warnings
 
-app.use("/api/users", userRoutes)
-app.use("/api/auth", authRoutes)
-app.use("/api/notes", notesRoutes)
 
+dotenv.config(); // Load environment variables
+const app = express();
+
+// Database Connection
+dbConnect(); // Connects to MongoDB
+
+// Middleware
+app.use(morgan("dev")); // Logs HTTP requests
+app.use(cors()); // Enables CORS
+app.use(express.json()); // Parses incoming JSON requests
+
+// Routes
 app.get("/", (req, res) => {
-  res.send("API is running")
-})
+  res.send("Welcome to the start page of the API");
+});
+app.use("*", authMiddleware); // Global middleware for authentication
+app.use("/api/users", userRoutes); // User-related routes
+app.use("/api/auth", authRoutes); // Authentication routes
+app.use("/api/notes", notesRoutes); // Notes-related routes
 
-module.exports = app
+// Export the app for deployment
+module.exports = app;
