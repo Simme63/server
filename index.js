@@ -23,6 +23,13 @@ dbConnect(); // Connects to MongoDB
 // Middleware
 app.use(morgan("dev")); // Logs HTTP requests
 app.use(cors()); // Enables CORS
+// Or, you can specify which origins are allowed, like your React frontend:
+app.use(cors({
+  origin: "https://your-react-frontend-url.com",  // The URL of your deployed React app
+  methods: "GET,POST,PUT,DELETE",               // Allow the necessary methods
+  allowedHeaders: "Content-Type,Authorization",  // Allow specific headers
+}));
+
 app.use(express.json()); // Parses incoming JSON requests
 
 // Routes
@@ -33,6 +40,8 @@ app.use("*", authMiddleware); // Global middleware for authentication
 app.use("/api/users", userRoutes); // User-related routes
 app.use("/api/auth", authRoutes); // Authentication routes
 app.use("/api/notes", notesRoutes); // Notes-related routes
+// Handle preflight (OPTIONS) requests manually (optional)
+app.options('*', cors());  // Enable pre-flight for all routes
 
 // Export the app for deployment
 module.exports = app;
