@@ -40,7 +40,7 @@ app.use("/api/users", userRoutes); // User-related routes
 app.use("/api/auth", authRoutes); // Authentication routes
 app.use("/api/notes", notesRoutes); // Notes-related routes
 
-app.options(cors()); // Enable pre-flight
+//app.options(cors()); // Enable pre-flight
 
 // Export the app for deployment
 module.exports = app;
