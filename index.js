@@ -19,7 +19,7 @@ const app = express();
 
 // Database Connection
 dbConnect(); // Connects to MongoDB
-app.use(cors())
+
 // Middleware
 app.use(morgan("dev")); // Logs HTTP requests
 // Or, you can specify which origins are allowed, like your React frontend:
@@ -40,7 +40,7 @@ app.use("/api/users", userRoutes); // User-related routes
 app.use("/api/auth", authRoutes); // Authentication routes
 app.use("/api/notes", notesRoutes); // Notes-related routes
 
-//app.options(cors()); // Enable pre-flight
+app.options("*", cors()); // Enable pre-flight
 
 // Export the app for deployment
 module.exports = app;
