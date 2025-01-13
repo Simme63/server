@@ -24,7 +24,7 @@ dbConnect(); // Connects to MongoDB
 app.use(morgan("dev")); // Logs HTTP requests
 // Or, you can specify which origins are allowed, like your React frontend:
 app.use(cors({
-  origin: "https://client-hknlo60xz-simme63s-projects.vercel.app/",  // The URL of your deployed React app
+  origin: "https://client-tau-one.vercel.app/",  // The URL of your deployed React app
   methods: "GET,POST,PUT,DELETE",               // Allow the necessary methods
   allowedHeaders: "Content-Type,Authorization",  // Allow specific headers
 }));
